@@ -12,7 +12,7 @@ const FichaDocenteSchema = new mongoose.Schema({
   correo_personal: { type: String, required: true },
   preferencia_correo: { type: String, enum: ['institucional', 'personal'], required: true },
   facultad: { type: String, required: true },
-  programa: { type: String, required: true },
+  estudiante_programa_academico: { type: String, required: true },
   asignaturas: { type: String, required: true },
   creditos_asignaturas: { type: Number, required: true },
   ciclo_formacion: { type: String, required: true },

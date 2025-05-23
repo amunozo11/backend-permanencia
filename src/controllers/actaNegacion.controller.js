@@ -2,6 +2,7 @@ const ActaNegacion = require('../models/ActaNegacion.model');
 
 exports.create = async (req, res) => {
   try {
+    console.log('Datos recibidos:', req.body);
     const doc = await ActaNegacion.create(req.body);
     res.status(201).json(doc);
   } catch (err) {

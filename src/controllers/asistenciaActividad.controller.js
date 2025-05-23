@@ -2,6 +2,7 @@ const AsistenciaActividad = require('../models/AsistenciaActividad.model');
 
 exports.create = async (req, res) => {
   try {
+    console.log('Datos recibidos:', req.body);
     const doc = await AsistenciaActividad.create(req.body);
     res.status(201).json(doc);
   } catch (err) {

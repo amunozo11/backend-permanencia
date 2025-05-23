@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const AsistenciaActividadSchema = new mongoose.Schema({
   nombre_estudiante: { type: String, required: true },
   numero_documento: { type: String, required: true },
-  programa_academico: { type: String, required: true },
+  estudiante_programa_academico_academico: { type: String, required: true },
   semestre: { type: Number, required: true },
   nombre_actividad: { type: String, required: true },
   modalidad: { type: String, required: true },

@@ -5,7 +5,7 @@ const ActaNegacionSchema = new mongoose.Schema({
   documento_tipo: { type: String, enum: ['C.C.', 'T.I.'], required: true },
   documento_numero: { type: String, required: true },
   documento_expedido_en: { type: String, required: true },
-  programa: { type: String, required: true },
+  estudiante_programa_academico: { type: String, required: true },
   semestre: { type: String, required: true },
   fecha_firma_dia: { type: String, required: true },
   fecha_firma_mes: { type: String, required: true },

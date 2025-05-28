@@ -11,6 +11,7 @@ const actaNegacionRoutes = require('./routes/actaNegacion.routes');
 const fichaDocenteRoutes = require('./routes/fichaDocente.routes');
 const remisionPsicologicaRoutes = require('./routes/remisionPsicologica.routes');
 const asistenciaActividadRoutes = require('./routes/asistenciaActividad.routes');
+const servicioRoutes = require('./routes/servicioRoutes');
 
 // Conexión DB
 connectDB();
@@ -28,5 +29,6 @@ app.use('/api/actas-negacion', actaNegacionRoutes);
 app.use('/api/fichas-docente', fichaDocenteRoutes);
 app.use('/api/remisiones-psicologicas', remisionPsicologicaRoutes);
 app.use('/api/asistencias-actividades', asistenciaActividadRoutes);
+app.use('/api/servicios', servicioRoutes);
 
 module.exports = app;

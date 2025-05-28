@@ -12,7 +12,7 @@ const crearOEncontrarEstudiante = async (datosEstudiante) => {
   try {
     // Buscar estudiante existente por número de documento
     let estudiante = await Estudiante.findOne({
-      numero_documento: datosEstudiante.numero_documento,
+      numero_documento1: datosEstudiante.numero_documento1,
     })
 
     if (estudiante) {
@@ -54,10 +54,10 @@ const registrarTutoria = async (req, res) => {
     // Validar campos requeridos
     const camposRequeridos = [
       "tipo_documento",
-      "numero_documento",
+      "numero_documento1",
       "nombres",
       "apellidos",
-      "correo",
+      "correo11",
       "programa_academico",
       "semestre",
       "riesgo_desercion",
@@ -78,10 +78,10 @@ const registrarTutoria = async (req, res) => {
     // Separar datos del estudiante y del servicio
     const datosEstudiante = {
       tipo_documento: datos.tipo_documento,
-      numero_documento: datos.numero_documento,
+      numero_documento1: datos.numero_documento1,
       nombres: datos.nombres.toUpperCase(),
       apellidos: datos.apellidos.toUpperCase(),
-      correo: datos.correo,
+      correo1: datos.correo1,
       telefono: datos.telefono,
       direccion: datos.direccion,
       programa_academico: datos.programa_academico,
@@ -144,10 +144,10 @@ const registrarPsicologia = async (req, res) => {
 
     const camposRequeridos = [
       "tipo_documento",
-      "numero_documento",
+      "numero_documento1",
       "nombres",
       "apellidos",
-      "correo",
+      "correo1",
       "programa_academico",
       "semestre",
       "riesgo_desercion",
@@ -168,10 +168,10 @@ const registrarPsicologia = async (req, res) => {
 
     const datosEstudiante = {
       tipo_documento: datos.tipo_documento,
-      numero_documento: datos.numero_documento,
+      numero_documento1: datos.numero_documento1,
       nombres: datos.nombres.toUpperCase(),
       apellidos: datos.apellidos.toUpperCase(),
-      correo: datos.correo,
+      correo1: datos.correo1,
       telefono: datos.telefono,
       direccion: datos.direccion,
       programa_academico: datos.programa_academico,
@@ -218,10 +218,10 @@ const registrarComedor = async (req, res) => {
 
     const camposRequeridos = [
       "tipo_documento",
-      "numero_documento",
+      "numero_documento1",
       "nombres",
       "apellidos",
-      "correo",
+      "correo1",
       "programa_academico",
       "semestre",
       "riesgo_desercion",
@@ -243,10 +243,10 @@ const registrarComedor = async (req, res) => {
 
     const datosEstudiante = {
       tipo_documento: datos.tipo_documento,
-      numero_documento: datos.numero_documento,
+      numero_documento1: datos.numero_documento1,
       nombres: datos.nombres.toUpperCase(),
       apellidos: datos.apellidos.toUpperCase(),
-      correo: datos.correo,
+      correo1: datos.correo1,
       telefono: datos.telefono,
       direccion: datos.direccion,
       programa_academico: datos.programa_academico,
@@ -311,10 +311,10 @@ const registrarVocacional = async (req, res) => {
 
     const camposRequeridos = [
       "tipo_documento",
-      "numero_documento",
+      "numero_documento1",
       "nombres",
       "apellidos",
-      "correo",
+      "correo1",
       "programa_academico",
       "semestre",
       "riesgo_desercion",
@@ -335,10 +335,10 @@ const registrarVocacional = async (req, res) => {
 
     const datosEstudiante = {
       tipo_documento: datos.tipo_documento,
-      numero_documento: datos.numero_documento,
+      numero_documento1: datos.numero_documento1,
       nombres: datos.nombres.toUpperCase(),
       apellidos: datos.apellidos.toUpperCase(),
-      correo: datos.correo,
+      correo1: datos.correo1,
       telefono: datos.telefono,
       direccion: datos.direccion,
       programa_academico: datos.programa_academico,
@@ -385,10 +385,10 @@ const registrarSocioeconomico = async (req, res) => {
 
     const camposRequeridos = [
       "tipo_documento",
-      "numero_documento",
+      "numero_documento1",
       "nombres",
       "apellidos",
-      "correo",
+      "correo1",
       "programa_academico",
       "semestre",
       "riesgo_desercion",
@@ -406,10 +406,10 @@ const registrarSocioeconomico = async (req, res) => {
 
     const datosEstudiante = {
       tipo_documento: datos.tipo_documento,
-      numero_documento: datos.numero_documento,
+      numero_documento1: datos.numero_documento1,
       nombres: datos.nombres.toUpperCase(),
       apellidos: datos.apellidos.toUpperCase(),
-      correo: datos.correo,
+      correo1: datos.correo1,
       telefono: datos.telefono,
       direccion: datos.direccion,
       programa_academico: datos.programa_academico,
@@ -454,10 +454,10 @@ const registrarTalleres = async (req, res) => {
 
     const camposRequeridos = [
       "tipo_documento",
-      "numero_documento",
+      "numero_documento1",
       "nombres",
       "apellidos",
-      "correo",
+      "correo1",
       "programa_academico",
       "semestre",
       "riesgo_desercion",
@@ -477,10 +477,10 @@ const registrarTalleres = async (req, res) => {
 
     const datosEstudiante = {
       tipo_documento: datos.tipo_documento,
-      numero_documento: datos.numero_documento,
+      numero_documento1: datos.numero_documento1,
       nombres: datos.nombres.toUpperCase(),
       apellidos: datos.apellidos.toUpperCase(),
-      correo: datos.correo,
+      correo1: datos.correo1,
       telefono: datos.telefono,
       direccion: datos.direccion,
       programa_academico: datos.programa_academico,
@@ -526,10 +526,10 @@ const registrarSeguimiento = async (req, res) => {
 
     const camposRequeridos = [
       "tipo_documento",
-      "numero_documento",
+      "numero_documento1",
       "nombres",
       "apellidos",
-      "correo",
+      "correo1",
       "programa_academico",
       "semestre",
       "riesgo_desercion",
@@ -549,10 +549,10 @@ const registrarSeguimiento = async (req, res) => {
 
     const datosEstudiante = {
       tipo_documento: datos.tipo_documento,
-      numero_documento: datos.numero_documento,
+      numero_documento1: datos.numero_documento1,
       nombres: datos.nombres.toUpperCase(),
       apellidos: datos.apellidos.toUpperCase(),
-      correo: datos.correo,
+      correo1: datos.correo1,
       telefono: datos.telefono,
       direccion: datos.direccion,
       programa_academico: datos.programa_academico,

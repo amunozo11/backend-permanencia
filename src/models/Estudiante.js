@@ -7,7 +7,7 @@ const estudianteSchema = new mongoose.Schema(
       required: true,
       enum: ["CC", "TI", "CE", "Pasaporte"],
     },
-    numero_documento: {
+    numero_documento1: {
       type: String,
       required: true,
       unique: true,
@@ -27,7 +27,7 @@ const estudianteSchema = new mongoose.Schema(
       uppercase: true,
       match: /^[A-ZÁÉÍÓÚÑ ]{2,50}$/,
     },
-    correo: {
+    correo1: {
       type: String,
       required: true,
       unique: true,
@@ -100,8 +100,8 @@ const estudianteSchema = new mongoose.Schema(
 )
 
 // Índices para mejorar el rendimiento
-estudianteSchema.index({ numero_documento: 1 })
-estudianteSchema.index({ correo: 1 })
+estudianteSchema.index({ numero_documento1: 1 })
+estudianteSchema.index({ correo1: 1 })
 estudianteSchema.index({ programa_academico: 1 })
 estudianteSchema.index({ riesgo_desercion: 1 })
 

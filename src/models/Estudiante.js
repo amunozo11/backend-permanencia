@@ -100,8 +100,6 @@ const estudianteSchema = new mongoose.Schema(
 )
 
 // Índices para mejorar el rendimiento
-estudianteSchema.index({ numero_documento1: 1 })
-estudianteSchema.index({ correo1: 1 })
 estudianteSchema.index({ programa_academico: 1 })
 estudianteSchema.index({ riesgo_desercion: 1 })
 

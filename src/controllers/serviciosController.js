@@ -57,7 +57,7 @@ const registrarTutoria = async (req, res) => {
       "numero_documento1",
       "nombres",
       "apellidos",
-      "correo11",
+      "correo1",
       "programa_academico",
       "semestre",
       "riesgo_desercion",

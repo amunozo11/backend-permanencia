@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose'
 
 const AsistenciaActividadSchema = new mongoose.Schema({
   nombre_estudiante: { type: String, required: true },
@@ -12,7 +12,7 @@ const AsistenciaActividadSchema = new mongoose.Schema({
   hora_inicio: { type: String, required: true },
   hora_fin: { type: String, required: true },
   modalidad_registro: { type: String, required: true },
-  observaciones: { type: String }
-});
+  observaciones: { type: String },
+})
 
-module.exports = mongoose.model('AsistenciaActividad', AsistenciaActividadSchema);
+export default mongoose.model('AsistenciaActividad', AsistenciaActividadSchema)

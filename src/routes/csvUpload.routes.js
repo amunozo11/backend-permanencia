@@ -1,14 +1,10 @@
-const express = require("express")
-const router = express.Router()
-const controller = require("../controllers/csvUpload.controller")
+import { Router } from 'express'
+import { uploadCsv, processCsv, getAllData, getStats } from '../controllers/csvUpload.controller.js'
 
-// Endpoint: POST /api/upload-csv
-router.post("/upload-csv", controller.uploadCsv, controller.processCsv)
+const router = Router()
 
-// Endpoint: GET /api/datos-permanencia
-router.get("/datos-permanencia", controller.getAllData)
+router.post('/upload-csv', uploadCsv, processCsv)
+router.get('/datos-permanencia', getAllData)
+router.get('/estadisticas', getStats)
 
-// Endpoint: GET /api/estadisticas
-router.get("/estadisticas", controller.getStats)
-
-module.exports = router
+export default router

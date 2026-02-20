@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose'
 
 const SoftwareEstudianteSchema = new mongoose.Schema({
   solicitud_id: { type: mongoose.Schema.Types.ObjectId, ref: 'SoftwareSolicitud', required: true },
@@ -7,7 +7,7 @@ const SoftwareEstudianteSchema = new mongoose.Schema({
   correo: { type: String, required: true },
   telefono: { type: String, required: true },
   semestre: { type: Number, required: true },
-  createdAt: { type: Date, default: Date.now }
-});
+  createdAt: { type: Date, default: Date.now },
+})
 
-module.exports = mongoose.model('SoftwareEstudiante', SoftwareEstudianteSchema);
+export default mongoose.model('SoftwareEstudiante', SoftwareEstudianteSchema)

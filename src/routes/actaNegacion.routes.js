@@ -1,11 +1,12 @@
-const express = require('express');
-const router = express.Router();
-const controller = require('../controllers/actaNegacion.controller');
+import { Router } from 'express'
+import { create, getAll, getOne, update, remove } from '../controllers/actaNegacion.controller.js'
 
-router.post('/', controller.create);
-router.get('/', controller.getAll);
-router.get('/:id', controller.getOne);
-router.put('/:id', controller.update);
-router.delete('/:id', controller.delete);
+const router = Router()
 
-module.exports = router;
+router.post('/', create)
+router.get('/', getAll)
+router.get('/:id', getOne)
+router.put('/:id', update)
+router.delete('/:id', remove)
+
+export default router

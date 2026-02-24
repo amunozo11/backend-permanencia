@@ -59,18 +59,24 @@ export const crearSolicitud = async (req, res) => {
         }
 
         // Notificar a todos los admins
-        const admins = await User.find({ role: 'admin', activo: true })
+        const admins = await User.find({ role: 'admin' })
         const user = await User.findById(req.user.id)
+        console.log("Enviando notificación a", admins.length, "admins. Usuario solicitante:", user?.nombre);
 
         for (const admin of admins) {
-            await Notification.create({
-                usuario: admin._id,
-                titulo: 'Nueva solicitud recibida',
-                mensaje: `${user.nombre} ${user.apellidos} ha enviado una solicitud de ${tipoLabels[tipo] || tipo}`,
-                tipo: 'solicitud_nueva',
-                enlace: `/admin/solicitudes`,
-                referencia: solicitud._id,
-            })
+            try {
+                const newNotif = await Notification.create({
+                    usuario: admin._id,
+                    titulo: 'Nueva solicitud recibida',
+                    mensaje: `${user.nombre} ${user.apellidos} ha enviado una solicitud de ${tipoLabels[tipo] || tipo}`,
+                    tipo: 'solicitud_nueva',
+                    enlace: `/admin/solicitudes`,
+                    referencia: solicitud._id,
+                })
+                console.log("Notificación creada con éxito con ID:", newNotif._id, "para admin", admin._id);
+            } catch (err) {
+                console.error("Error al crear notificación para admin", admin._id, ":", err);
+            }
         }
 
         res.status(201).json({
@@ -137,7 +143,58 @@ export const obtenerSolicitud = async (req, res) => {
     }
 }
 
-// Admin actualiza estado
+// Estudiante agrega un comentario/respuesta a su solicitud
+export const agregarComentarioEstudiante = async (req, res) => {
+    try {
+        const { comentario } = req.body
+        if (!comentario?.trim()) {
+            return res.status(400).json({ success: false, message: 'El comentario no puede estar vacío' })
+        }
+
+        const solicitud = await Solicitud.findById(req.params.id)
+        if (!solicitud) {
+            return res.status(404).json({ success: false, message: 'Solicitud no encontrada' })
+        }
+
+        // Solo el dueño de la solicitud puede comentar
+        if (solicitud.usuario.toString() !== req.user.id) {
+            return res.status(403).json({ success: false, message: 'No autorizado' })
+        }
+
+        solicitud.historial_estados.push({
+            estado: solicitud.estado,
+            comentario: `📝 Estudiante: ${comentario}`,
+        })
+
+        await solicitud.save()
+
+        // Notificar al admin
+        const admins = await User.find({ role: 'admin' })
+        const student = await User.findById(req.user.id)
+        for (const admin of admins) {
+            await Notification.create({
+                usuario: admin._id,
+                titulo: 'Respuesta de estudiante',
+                mensaje: `${student?.nombre} ${student?.apellidos} respondió a su solicitud de ${tipoLabels[solicitud.tipo] || solicitud.tipo}: "${comentario.slice(0, 80)}${comentario.length > 80 ? '...' : ''}"`,
+                tipo: 'estado_actualizado',
+                enlace: `/admin/solicitudes`,
+                referencia: solicitud._id,
+            })
+        }
+
+        const io = getIO()
+        if (io) {
+            const solicitudPopulated = await Solicitud.findById(solicitud._id).populate('usuario', 'nombre apellidos email')
+            io.emit('solicitud_actualizada', solicitudPopulated)
+        }
+
+        res.json({ success: true, message: 'Comentario enviado', data: solicitud })
+    } catch (error) {
+        console.error('Error al agregar comentario:', error)
+        res.status(500).json({ success: false, message: 'Error interno del servidor' })
+    }
+}
+
 export const actualizarEstado = async (req, res) => {
     try {
         const { estado, observacionesAdmin, observaciones_admin, documento } = req.body

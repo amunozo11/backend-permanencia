@@ -1,3 +1,14 @@
 node_modules/
 .env
 uploads/
+test.js
+test_db.js
+test_logic.js
+test-import.js
+test-mongo.cjs
+test_mongo.js
+test_auth-logic.js
+testReadExcel.js
+check_db.js
+check-users.js
+deep-diagnostics.js

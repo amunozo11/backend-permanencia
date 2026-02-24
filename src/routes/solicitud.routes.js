@@ -6,6 +6,7 @@ import {
     todasSolicitudes,
     obtenerSolicitud,
     actualizarEstado,
+    agregarComentarioEstudiante,
 } from '../controllers/solicitudController.js'
 
 const router = Router()
@@ -24,5 +25,8 @@ router.get('/:id', authMiddleware, obtenerSolicitud)
 
 // Admin: actualizar estado
 router.put('/:id/estado', authMiddleware, requireRole('admin'), actualizarEstado)
+
+// Estudiante: agregar comentario/respuesta
+router.post('/:id/comentario', authMiddleware, agregarComentarioEstudiante)
 
 export default router

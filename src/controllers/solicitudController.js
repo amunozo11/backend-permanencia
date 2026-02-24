@@ -1,6 +1,7 @@
 import Solicitud from '../models/Solicitud.js'
 import Notification from '../models/Notification.js'
 import User from '../models/User.js'
+import { getIO } from '../config/socket.js'
 
 // Labels legibles para los tipos de solicitud
 const tipoLabels = {
@@ -50,6 +51,12 @@ export const crearSolicitud = async (req, res) => {
         })
 
         await solicitud.save()
+
+        const solicitudCompleta = await Solicitud.findById(solicitud._id).populate('usuario', 'nombre apellidos email')
+        const io = getIO()
+        if (io) {
+            io.emit('nueva_solicitud', solicitudCompleta)
+        }
 
         // Notificar a todos los admins
         const admins = await User.find({ role: 'admin', activo: true })
@@ -153,6 +160,12 @@ export const actualizarEstado = async (req, res) => {
         })
 
         await solicitud.save()
+
+        const solicitudPopulated = await Solicitud.findById(solicitud._id).populate('usuario', 'nombre apellidos email')
+        const io = getIO()
+        if (io) {
+            io.emit('solicitud_actualizada', solicitudPopulated)
+        }
 
         // Notificar al estudiante
         await Notification.create({

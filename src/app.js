@@ -16,6 +16,8 @@ import remisionPsicologicaRoutes from './routes/remisionPsicologica.routes.js'
 import softwareEstudianteRoutes from './routes/softwareEstudiante.routes.js'
 import softwareSolicitudRoutes from './routes/softwareSolicitud.routes.js'
 import riesgoRoutes from './routes/riesgo.routes.js'
+import mortalidadRoutes from './routes/mortalidad.routes.js'
+import inscritosRoutes from './routes/inscritos.routes.js'
 
 // Middleware
 import { authMiddleware, requireRole } from './middleware/auth.js'
@@ -65,6 +67,8 @@ adminRouter.use('/remision-psicologica', remisionPsicologicaRoutes)
 adminRouter.use('/software-estudiante', softwareEstudianteRoutes)
 adminRouter.use('/software-solicitud', softwareSolicitudRoutes)
 adminRouter.use('/riesgo', riesgoRoutes)
+adminRouter.use('/mortalidad', mortalidadRoutes)
+adminRouter.use('/inscritos', inscritosRoutes)
 
 
 export default app

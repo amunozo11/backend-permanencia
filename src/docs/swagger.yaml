@@ -1,0 +1,403 @@
+# Centralized Swagger API Documentation
+
+openapi: 3.0.0
+info:
+  title: Backend Permanencia API
+  description: Documentación de la API centralizada para el backend de permanencia estudiantil.
+  version: 1.0.0
+  contact:
+    name: Soporte
+    email: soporte@ejemplo.com
+
+servers:
+  - url: http://localhost:5000
+    description: Servidor de Desarrollo
+  - url: https://api.tu-dominio.com
+    description: Servidor de Producción
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Mensaje de error detallado
+        error:
+          type: string
+          example: Error interno del servidor
+
+    Solicitud:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 64b9a1c2e4b0d8f7a6c5b4a3
+        tipo:
+          type: string
+          enum: [Tutoria, Psicologia, Apoyo Financiero]
+        descripcion:
+          type: string
+          example: Requiero apoyo con matemáticas.
+        estado:
+          type: string
+          enum: [Pendiente, En Proceso, Resuelto]
+          example: Pendiente
+
+security:
+  - BearerAuth: []
+
+paths:
+  /api/health:
+    get:
+      tags:
+        - Health
+      summary: Verifica el estado del servidor
+      security: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  timestamp:
+                    type: string
+                    example: 2026-02-24T18:00:00Z
+
+  # ─── AUTH ───
+  /api/auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Registra un nuevo usuario
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "201":
+          description: Usuario creado exitosamente
+        "400":
+          description: Datos inválidos
+
+  /api/auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Inicia sesión
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Login exitoso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        "401":
+          description: Credenciales incorrectas
+
+  /api/auth/profile:
+    get:
+      tags:
+        - Auth
+      summary: Obtiene el perfil del usuario autenticado
+      responses:
+        "200":
+          description: Datos del usuario
+        "401":
+          description: No autorizado
+
+  # ─── SOLICITUDES ───
+  /api/solicitudes:
+    post:
+      tags:
+        - Solicitudes
+      summary: Crea una nueva solicitud
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Solicitud"
+      responses:
+        "201":
+          description: Solicitud creada
+
+    get:
+      tags:
+        - Solicitudes (Admin)
+      summary: (Admin) Obtiene todas las solicitudes del sistema
+      responses:
+        "200":
+          description: Lista de solicitudes
+
+  /api/solicitudes/mis:
+    get:
+      tags:
+        - Solicitudes
+      summary: Obtiene las solicitudes del usuario autenticado
+      responses:
+        "200":
+          description: Lista de solicitudes propias del usuario
+
+  /api/solicitudes/{id}:
+    get:
+      tags:
+        - Solicitudes
+      summary: Obtiene una solicitud por su ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Detalle de la solicitud
+        "404":
+          description: Solicitud no encontrada
+
+  /api/solicitudes/{id}/estado:
+    put:
+      tags:
+        - Solicitudes (Admin)
+      summary: (Admin) Actualiza el estado de una solicitud
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                estado:
+                  type: string
+      responses:
+        "200":
+          description: Estado actualizado
+
+  # ─── NOTIFICACIONES ───
+  /api/notificaciones:
+    get:
+      tags:
+        - Notificaciones
+      summary: Obtiene las notificaciones del usuario
+      responses:
+        "200":
+          description: Lista de notificaciones
+
+  /api/notificaciones/count:
+    get:
+      tags:
+        - Notificaciones
+      summary: Cuenta las notificaciones no leídas
+      responses:
+        "200":
+          description: Cantidad de notificaciones
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+
+  /api/notificaciones/{id}/leer:
+    put:
+      tags:
+        - Notificaciones
+      summary: Marca una notificación como leída
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Notificación marcada como leída
+
+  /api/notificaciones/leer-todas:
+    put:
+      tags:
+        - Notificaciones
+      summary: Marca todas las notificaciones como leídas
+      responses:
+        "200":
+          description: Todas las notificaciones marcadas como leídas
+
+  # ─── ADMIN: UPLOAD CSV ───
+  /api/admin/upload/upload-csv:
+    post:
+      tags:
+        - Admin (Carga CSV)
+      summary: Sube y procesa un archivo CSV de permanencia
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: CSV procesado exitosamente
+
+  /api/admin/upload/datos-permanencia:
+    get:
+      tags:
+        - Admin (Carga CSV)
+      summary: Obtiene los datos de permanencia extraídos
+      responses:
+        "200":
+          description: Datos de permanencia
+
+  /api/admin/upload/estadisticas:
+    get:
+      tags:
+        - Admin (Carga CSV)
+      summary: Obtiene estadísticas de la carga de datos
+      responses:
+        "200":
+          description: Estadísticas obtenidas
+
+  # ─── ADMIN: SERVICIOS ───
+  /api/admin/servicios/rutas-servicios:
+    get:
+      tags:
+        - Admin (Servicios)
+      summary: (Endpoint dinámico) Administra las lógicas de tutorias, psicologia, comedor, vocacional, etc.
+      description: Reemplazar estas rutas dinámicas conforme a la implementación completa en controllers
+      responses:
+        "200":
+          description: Operación exitosa
+
+  # ─── ADMIN: ACTA NEGACIÓN ───
+  /api/admin/acta-negacion:
+    post:
+      tags:
+        - Admin (Actas)
+      summary: Crea un acta de negación
+      responses:
+        "201":
+          description: Acta creada
+    get:
+      tags:
+        - Admin (Actas)
+      summary: Obtiene todas las actas de negación
+      responses:
+        "200":
+          description: Lista de actas
+  /api/admin/acta-negacion/{id}:
+    get:
+      tags:
+        - Admin (Actas)
+      summary: Obtiene un acta por ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Detalle del acta
+    put:
+      tags:
+        - Admin (Actas)
+      summary: Actualiza un acta
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Acta actualizada
+    delete:
+      tags:
+        - Admin (Actas)
+      summary: Elimina un acta
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Acta eliminada
+
+  # ─── ADMIN: RIESGO ───
+  /api/admin/riesgo/import:
+    post:
+      tags:
+        - Admin (Riesgo)
+      summary: Importa datos de riesgo estudiantil (Excel)
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                archivo:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Archivo importado correctamente
+
+  /api/admin/riesgo/stats:
+    get:
+      tags:
+        - Admin (Riesgo)
+      summary: Obtiene estadísticas de riesgo
+      responses:
+        "200":
+          description: Estadísticas

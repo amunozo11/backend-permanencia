@@ -1,7 +1,11 @@
 import express from 'express'
 import cors from 'cors'
 import connectDB from './config/db.js'
-
+// We will initialize Swagger after importing routes
+import path from 'path'
+import { fileURLToPath } from 'url'
+import swaggerUi from 'swagger-ui-express'
+import yamljs from 'yamljs'
 // Routes
 import authRoutes from './routes/auth.routes.js'
 import solicitudRoutes from './routes/solicitud.routes.js'
@@ -9,6 +13,7 @@ import notificationRoutes from './routes/notification.routes.js'
 import csvUploadRoutes from './routes/csvUpload.routes.js'
 import servicioRoutes from './routes/servicioRoutes.js'
 import actaNegacionRoutes from './routes/actaNegacion.routes.js'
+import bucketRoutes from './routes/bucket.routes.js'
 import asistenciaActividadRoutes from './routes/asistenciaActividad.routes.js'
 import fichaDocenteRoutes from './routes/fichaDocente.routes.js'
 import grupalSolicitudRoutes from './routes/grupalSolicitud.routes.js'
@@ -21,6 +26,11 @@ import inscritosRoutes from './routes/inscritos.routes.js'
 
 // Middleware
 import { authMiddleware, requireRole } from './middleware/auth.js'
+
+// Setup Swagger
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+const swaggerDocument = yamljs.load(path.join(__dirname, 'docs', 'swagger.yaml'))
 
 const app = express()
 
@@ -44,6 +54,9 @@ app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() })
 })
 
+// ──── Documentación Swagger ────
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+
 // ──── Rutas públicas ────
 app.use('/api/auth', authRoutes)
 
@@ -60,6 +73,7 @@ app.use('/api/admin', adminRouter) // Para subidas de CSV y otros
 adminRouter.use('/upload', csvUploadRoutes)
 adminRouter.use('/servicios', servicioRoutes)
 adminRouter.use('/acta-negacion', actaNegacionRoutes)
+adminRouter.use('/bucket', bucketRoutes)
 adminRouter.use('/asistencia-actividad', asistenciaActividadRoutes)
 adminRouter.use('/ficha-docente', fichaDocenteRoutes)
 adminRouter.use('/grupal-solicitud', grupalSolicitudRoutes)

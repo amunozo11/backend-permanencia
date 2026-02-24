@@ -1,0 +1,568 @@
+{
+    "id": 6992248045787,
+    "name": "PEDIDO#139260",
+    "note": null,
+    "tags": "abandoned_checkout_releasit_cod_form",
+    "test": false,
+    "email": "",
+    "phone": "+50765937591",
+    "token": "05d8994f211b339854162874486039a0",
+    "app_id": 1354745,
+    "number": 138260,
+    "refunds": [],
+    "user_id": 101594136795,
+    "currency": "USD",
+    "customer": {
+        "id": 9250879275227,
+        "note": null,
+        "tags": "",
+        "email": null,
+        "phone": "+50765937591",
+        "state": "disabled",
+        "currency": "USD",
+        "last_name": "Gooding",
+        "created_at": "2026-02-24T14:49:08-05:00",
+        "first_name": "Jaime francisco",
+        "tax_exempt": false,
+        "updated_at": "2026-02-24T15:13:22-05:00",
+        "tax_exemptions": [],
+        "verified_email": true,
+        "default_address": {
+            "id": 10740453441755,
+            "zip": "-",
+            "city": "Panamá",
+            "name": "Jaime francisco Gooding",
+            "phone": "+50765937591",
+            "company": null,
+            "country": "Panama",
+            "default": true,
+            "address1": "San Fernando de Juan Díaz",
+            "address2": "De tras de la e",
+            "province": null,
+            "last_name": "Gooding",
+            "first_name": "Jaime francisco",
+            "customer_id": 9250879275227,
+            "country_code": "PA",
+            "country_name": "Panama",
+            "province_code": null
+        },
+        "admin_graphql_api_id": "gid://shopify/Customer/9250879275227",
+        "multipass_identifier": null,
+        "sms_marketing_consent": {
+            "state": "not_subscribed",
+            "opt_in_level": "single_opt_in",
+            "consent_updated_at": null,
+            "consent_collected_from": null
+        },
+        "email_marketing_consent": null
+    },
+    "closed_at": null,
+    "confirmed": true,
+    "device_id": null,
+    "po_number": null,
+    "reference": null,
+    "tax_lines": [],
+    "total_tax": "0.00",
+    "browser_ip": "190.60.51.214",
+    "cart_token": null,
+    "created_at": "2026-02-24T15:13:21-05:00",
+    "line_items": [
+        {
+            "id": 16465638686939,
+            "sku": "",
+            "name": "Shilajit 100% Puro💎¡Energía vital del Himalaya!",
+            "grams": 0,
+            "price": "30.00",
+            "title": "Shilajit 100% Puro💎¡Energía vital del Himalaya!",
+            "duties": [],
+            "vendor": "HUGO LINEA PANAMA",
+            "taxable": false,
+            "quantity": 2,
+            "gift_card": false,
+            "price_set": {
+                "shop_money": {
+                    "amount": "30.00",
+                    "currency_code": "USD"
+                },
+                "presentment_money": {
+                    "amount": "30.00",
+                    "currency_code": "USD"
+                }
+            },
+            "tax_lines": [
+                {
+                    "rate": 0.05,
+                    "price": "0.00",
+                    "title": "ITBMS",
+                    "price_set": {
+                        "shop_money": {
+                            "amount": "0.00",
+                            "currency_code": "USD"
+                        },
+                        "presentment_money": {
+                            "amount": "0.00",
+                            "currency_code": "USD"
+                        }
+                    },
+                    "channel_liable": false
+                },
+                {
+                    "rate": 0.05,
+                    "price": "0.00",
+                    "title": "ITBMS",
+                    "price_set": {
+                        "shop_money": {
+                            "amount": "0.00",
+                            "currency_code": "USD"
+                        },
+                        "presentment_money": {
+                            "amount": "0.00",
+                            "currency_code": "USD"
+                        }
+                    },
+                    "channel_liable": false
+                }
+            ],
+            "product_id": 8875143102683,
+            "properties": [],
+            "variant_id": 46752401391835,
+            "variant_title": null,
+            "product_exists": true,
+            "total_discount": "0.00",
+            "current_quantity": 1,
+            "attributed_staffs": [],
+            "original_quantity": 1,
+            "requires_shipping": true,
+            "fulfillment_status": "fulfilled",
+            "total_discount_set": {
+                "shop_money": {
+                    "amount": "0.00",
+                    "currency_code": "USD"
+                },
+                "presentment_money": {
+                    "amount": "0.00",
+                    "currency_code": "USD"
+                }
+            },
+            "fulfillment_service": "manual",
+            "admin_graphql_api_id": "gid://shopify/LineItem/16465638686939",
+            "discount_allocations": [],
+            "fulfillable_quantity": 0,
+            "variant_inventory_management": "shopify"
+        }
+    ],
+    "source_url": null,
+    "tax_exempt": false,
+    "updated_at": "2026-02-24T15:13:27-05:00",
+    "checkout_id": 37650469028059,
+    "location_id": null,
+    "source_name": "shopify_draft_order",
+    "total_price": "60.00",
+    "cancelled_at": null,
+    "fulfillments": [
+        {
+            "id": 6295329145051,
+            "name": "PEDIDO#139260.1",
+            "status": "success",
+            "receipt": {},
+            "service": "manual",
+            "order_id": 6992248045787,
+            "created_at": "2026-02-24T15:13:26-05:00",
+            "line_items": [
+                {
+                    "id": 16465638686939,
+                    "sku": "",
+                    "name": "Shilajit 100% Puro💎¡Energía vital del Himalaya!",
+                    "grams": 0,
+                    "price": "30.00",
+                    "title": "Shilajit 100% Puro💎¡Energía vital del Himalaya!",
+                    "duties": [],
+                    "vendor": "HUGO LINEA PANAMA",
+                    "taxable": false,
+                    "quantity": 1,
+                    "gift_card": false,
+                    "price_set": {
+                        "shop_money": {
+                            "amount": "30.00",
+                            "currency_code": "USD"
+                        },
+                        "presentment_money": {
+                            "amount": "30.00",
+                            "currency_code": "USD"
+                        }
+                    },
+                    "tax_lines": [
+                        {
+                            "rate": 0.05,
+                            "price": "0.00",
+                            "title": "ITBMS",
+                            "price_set": {
+                                "shop_money": {
+                                    "amount": "0.00",
+                                    "currency_code": "USD"
+                                },
+                                "presentment_money": {
+                                    "amount": "0.00",
+                                    "currency_code": "USD"
+                                }
+                            },
+                            "channel_liable": false
+                        },
+                        {
+                            "rate": 0.05,
+                            "price": "0.00",
+                            "title": "ITBMS",
+                            "price_set": {
+                                "shop_money": {
+                                    "amount": "0.00",
+                                    "currency_code": "USD"
+                                },
+                                "presentment_money": {
+                                    "amount": "0.00",
+                                    "currency_code": "USD"
+                                }
+                            },
+                            "channel_liable": false
+                        }
+                    ],
+                    "product_id": 8875143102683,
+                    "properties": [],
+                    "variant_id": 46752401391835,
+                    "variant_title": null,
+                    "product_exists": true,
+                    "total_discount": "0.00",
+                    "current_quantity": 1,
+                    "attributed_staffs": [],
+                    "requires_shipping": true,
+                    "fulfillment_status": "fulfilled",
+                    "total_discount_set": {
+                        "shop_money": {
+                            "amount": "0.00",
+                            "currency_code": "USD"
+                        },
+                        "presentment_money": {
+                            "amount": "0.00",
+                            "currency_code": "USD"
+                        }
+                    },
+                    "fulfillment_service": "manual",
+                    "admin_graphql_api_id": "gid://shopify/LineItem/16465638686939",
+                    "discount_allocations": [],
+                    "fulfillable_quantity": 0,
+                    "variant_inventory_management": "shopify"
+                }
+            ],
+            "updated_at": "2026-02-24T15:13:26-05:00",
+            "location_id": 61093216475,
+            "tracking_url": null,
+            "tracking_urls": [],
+            "origin_address": {},
+            "shipment_status": null,
+            "tracking_number": null,
+            "tracking_company": null,
+            "tracking_numbers": [],
+            "admin_graphql_api_id": "gid://shopify/Fulfillment/6295329145051"
+        }
+    ],
+    "landing_site": null,
+    "order_number": 139260,
+    "processed_at": "2026-02-24T15:13:21-05:00",
+    "total_weight": 0,
+    "cancel_reason": null,
+    "contact_email": null,
+    "payment_terms": null,
+    "total_tax_set": {
+        "shop_money": {
+            "amount": "0.00",
+            "currency_code": "USD"
+        },
+        "presentment_money": {
+            "amount": "0.00",
+            "currency_code": "USD"
+        }
+    },
+    "checkout_token": "b3a96517b292a1a6f19d16be72ae2302",
+    "client_details": {
+        "browser_ip": "190.60.51.214",
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "session_hash": null,
+        "browser_width": null,
+        "browser_height": null,
+        "accept_language": null
+    },
+    "discount_codes": [],
+    "referring_site": null,
+    "shipping_lines": [
+        {
+            "id": 5664173883611,
+            "code": "custom",
+            "phone": null,
+            "price": "0.00",
+            "title": "ENVÍO GRATIS",
+            "source": "shopify",
+            "price_set": {
+                "shop_money": {
+                    "amount": "0.00",
+                    "currency_code": "USD"
+                },
+                "presentment_money": {
+                    "amount": "0.00",
+                    "currency_code": "USD"
+                }
+            },
+            "tax_lines": [],
+            "is_removed": false,
+            "discounted_price": "0.00",
+            "carrier_identifier": null,
+            "discount_allocations": [],
+            "discounted_price_set": {
+                "shop_money": {
+                    "amount": "0.00",
+                    "currency_code": "USD"
+                },
+                "presentment_money": {
+                    "amount": "0.00",
+                    "currency_code": "USD"
+                }
+            },
+            "requested_fulfillment_service_id": null
+        }
+    ],
+    "subtotal_price": "30.00",
+    "taxes_included": false,
+    "billing_address": {
+        "zip": "-",
+        "city": "Panamá",
+        "name": "Jaime francisco Gooding",
+        "phone": "+507 6593-7591",
+        "company": null,
+        "country": "Panama",
+        "address1": "San Fernando de Juan Díaz",
+        "address2": "De tras de la estacion texaco",
+        "latitude": 9.0406586,
+        "province": "Panamá",
+        "last_name": "Gooding",
+        "longitude": -79.4224809,
+        "first_name": "Jaime francisco",
+        "country_code": "PA",
+        "province_code": "PA-8"
+    },
+    "customer_locale": "es",
+    "duties_included": false,
+    "estimated_taxes": false,
+    "note_attributes": [
+        {
+            "name": "UTM term",
+            "value": "120242405727190706"
+        },
+        {
+            "name": "UTM content",
+            "value": "120242405727150706"
+        },
+        {
+            "name": "UTM campaign",
+            "value": "120242405727200706"
+        },
+        {
+            "name": "UTM medium",
+            "value": "paid"
+        },
+        {
+            "name": "UTM source",
+            "value": "facebook"
+        },
+        {
+            "name": "first_name",
+            "value": "Jaime francisco"
+        },
+        {
+            "name": "last_name",
+            "value": "Gooding"
+        },
+        {
+            "name": "phone",
+            "value": "65937591"
+        },
+        {
+            "name": "Country code",
+            "value": "PA"
+        },
+        {
+            "name": "city",
+            "value": "Panamá"
+        },
+        {
+            "name": "📍Dirección completa y detallada",
+            "value": "San Fernando de Juan Díaz"
+        },
+        {
+            "name": "👉Nombre de zona o barriada",
+            "value": "De tras de la e"
+        },
+        {
+            "name": "IP address",
+            "value": "190.57.40.67"
+        },
+        {
+            "name": "Recovery URL",
+            "value": "https://www.hugoenlinea.com/products/shilajitpuro?rsiacd=YWJhbmRvbmVkX29yZGVyX2lkPTlTSDVrSVdtY3RBcDVoQXcmdXRtX3Rlcm09MTIwMjQyNDA1NzI3MTkwNzA2JnV0bV9jb250ZW50PTEyMDI0MjQwNTcyNzE1MDcwNiZ1dG1fY2FtcGFpZ249MTIwMjQyNDA1NzI3MjAwNzA2JnV0bV9tZWRpdW09cGFpZCZ1dG1fc291cmNlPWZhY2Vib29rJm1ldHJpY3NfcXVhbnRpdHlfb2ZmZXJfaWQ9MTc3MDU5MTI3Nzk4MyZmaXJzdF9uYW1lPUphaW1lJTIwZnJhbmNpc2NvJmxhc3RfbmFtZT1Hb29kaW5nJnBob25lPTY1OTM3NTkxJnByb3ZpbmNlX2NvdW50cnlfZmllbGQ9JmNpdHk9UGFuYW0lQzMlQTEmYWRkcmVzcz1TYW4lMjBGZXJuYW5kbyUyMGRlJTIwSnVhbiUyMEQlQzMlQURheiZjaXZpY19udW1iZXI9RGUlMjB0cmFzJTIwZGUlMjBsYSUyMGUmcnNpX3R1cm5zdHlsZV90b2tlbj0="
+        }
+    ],
+    "total_discounts": "0.00",
+    "total_price_set": {
+        "shop_money": {
+            "amount": "30.00",
+            "currency_code": "USD"
+        },
+        "presentment_money": {
+            "amount": "30.00",
+            "currency_code": "USD"
+        }
+    },
+    "financial_status": "paid",
+    "landing_site_ref": null,
+    "order_status_url": "https://www.hugoenlinea.com/55078519003/orders/05d8994f211b339854162874486039a0/authenticate?key=4e63890dc22143fe2c9fb01a75fb1225",
+    "shipping_address": {
+        "zip": null,
+        "city": "Panamá",
+        "name": "Jaime francisco Gooding",
+        "phone": "+507 6593-7591",
+        "company": null,
+        "country": "Panama",
+        "address1": "San Fernando de Juan Díaz",
+        "address2": "De tras de la estacion texaco",
+        "latitude": 9.0406586,
+        "province": "Panamá",
+        "last_name": "Gooding",
+        "longitude": -79.4224809,
+        "first_name": "Jaime francisco",
+        "country_code": "PA",
+        "province_code": "PA-8"
+    },
+    "current_total_tax": "0.00",
+    "source_identifier": null,
+    "total_outstanding": "0.00",
+    "fulfillment_status": "fulfilled",
+    "subtotal_price_set": {
+        "shop_money": {
+            "amount": "30.00",
+            "currency_code": "USD"
+        },
+        "presentment_money": {
+            "amount": "30.00",
+            "currency_code": "USD"
+        }
+    },
+    "total_tip_received": "0.00",
+    "confirmation_number": "HT8ZHEKFR",
+    "current_total_price": "30.00",
+    "modified_quantities": {
+        "16465638686939": 2
+    },
+    "total_discounts_set": {
+        "shop_money": {
+            "amount": "0.00",
+            "currency_code": "USD"
+        },
+        "presentment_money": {
+            "amount": "0.00",
+            "currency_code": "USD"
+        }
+    },
+    "admin_graphql_api_id": "gid://shopify/Order/6992248045787",
+    "presentment_currency": "USD",
+    "current_total_tax_set": {
+        "shop_money": {
+            "amount": "0.00",
+            "currency_code": "USD"
+        },
+        "presentment_money": {
+            "amount": "0.00",
+            "currency_code": "USD"
+        }
+    },
+    "discount_applications": [],
+    "payment_gateway_names": [
+        "manual"
+    ],
+    "current_subtotal_price": "30.00",
+    "total_line_items_price": "30.00",
+    "buyer_accepts_marketing": false,
+    "current_total_discounts": "0.00",
+    "current_total_price_set": {
+        "shop_money": {
+            "amount": "30.00",
+            "currency_code": "USD"
+        },
+        "presentment_money": {
+            "amount": "30.00",
+            "currency_code": "USD"
+        }
+    },
+    "current_total_duties_set": null,
+    "total_shipping_price_set": {
+        "shop_money": {
+            "amount": "0.00",
+            "currency_code": "USD"
+        },
+        "presentment_money": {
+            "amount": "0.00",
+            "currency_code": "USD"
+        }
+    },
+    "merchant_of_record_app_id": null,
+    "original_total_duties_set": null,
+    "current_subtotal_price_set": {
+        "shop_money": {
+            "amount": "30.00",
+            "currency_code": "USD"
+        },
+        "presentment_money": {
+            "amount": "30.00",
+            "currency_code": "USD"
+        }
+    },
+    "total_line_items_price_set": {
+        "shop_money": {
+            "amount": "30.00",
+            "currency_code": "USD"
+        },
+        "presentment_money": {
+            "amount": "30.00",
+            "currency_code": "USD"
+        }
+    },
+    "current_total_discounts_set": {
+        "shop_money": {
+            "amount": "0.00",
+            "currency_code": "USD"
+        },
+        "presentment_money": {
+            "amount": "0.00",
+            "currency_code": "USD"
+        }
+    },
+    "merchant_business_entity_id": "MTU1MDc4NTE5MDAz",
+    "current_total_additional_fees_set": null,
+    "original_total_additional_fees_set": null,
+    "total_cash_rounding_refund_adjustment_set": {
+        "shop_money": {
+            "amount": "0.00",
+            "currency_code": "USD"
+        },
+        "presentment_money": {
+            "amount": "0.00",
+            "currency_code": "USD"
+        }
+    },
+    "total_cash_rounding_payment_adjustment_set": {
+        "shop_money": {
+            "amount": "0.00",
+            "currency_code": "USD"
+        },
+        "presentment_money": {
+            "amount": "0.00",
+            "currency_code": "USD"
+        }
+    }
+}

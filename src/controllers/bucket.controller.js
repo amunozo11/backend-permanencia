@@ -1,5 +1,7 @@
 import fs from 'fs'
 import FormData from 'form-data'
+import axios from 'axios'
+import BucketFile from '../models/BucketFile.model.js'
 
 // Opcional: Para NodeJS > 18 el fetch nativo suele funcionar bien, 
 // pero form-data clásico con fetch a veces requiere configuraciones extras de headers.
@@ -19,37 +21,57 @@ export const uploadFile = async (req, res) => {
         const form = new FormData()
         form.append('file', fs.createReadStream(req.file.path))
 
-        // Petición al servidor de Hostinger
-        const response = await fetch(`${HOSTINGER_API_URL}/upload`, {
-            method: 'POST',
-            headers: {
-                'x-api-key': HOSTINGER_API_KEY,
-                // NO poner 'Content-Type': 'multipart/form-data', FormData lo autogenera con su boundary
-            },
-            body: form,
-            // Importante para node-fetch/form-data compatibility en algunass versiones
-            duplex: 'half'
-        })
+        // Petición al servidor de Hostinger usando axios
+        let response
+        try {
+            response = await axios.post(`${HOSTINGER_API_URL}/upload`, form, {
+                headers: {
+                    'x-api-key': HOSTINGER_API_KEY,
+                    ...form.getHeaders()
+                }
+            })
+        } catch (axiosError) {
+            // Eliminar el archivo temporal local en caso de error HTTP
+            if (fs.existsSync(req.file.path)) {
+                fs.unlinkSync(req.file.path)
+            }
 
-        const data = await response.json()
+            return res.status(axiosError.response?.status || 500).json({
+                success: false,
+                message: 'Error en el servidor de almacenamiento externo',
+                error: axiosError.response?.data || axiosError.message
+            })
+        }
 
-        // Eliminar el archivo temporal local
+        const data = response.data
+
+        // Eliminar el archivo temporal local tras éxito
         if (fs.existsSync(req.file.path)) {
             fs.unlinkSync(req.file.path)
         }
 
-        if (!response.ok) {
-            return res.status(response.status).json({
-                success: false,
-                message: 'Error en el servidor de almacenamiento externo',
-                error: data
+        // Extraer la URL dependiendo de la respuesta de Hostinger (data.url, data.fileUrl, data.path, etc)
+        const fileUrl = data.url || data.fileUrl || data.path || (data.data && data.data.url) || null
+
+        let fileDoc = null
+        try {
+            const newFile = new BucketFile({
+                originalName: req.file.originalname,
+                hostingerUrl: fileUrl || 'URL_NO_DETERMINADA',
+                uploadedBy: req.user.id,
+                mimetype: req.file.mimetype,
+                size: req.file.size
             })
+            fileDoc = await newFile.save()
+        } catch (dbError) {
+            console.error('Error guardando BucketFile en la base de datos:', dbError)
         }
 
         res.status(200).json({
             success: true,
-            message: 'Archivo subido correctamente al bucket',
-            data: data
+            message: 'Archivo subido correctamente al bucket y registrado en la BD',
+            data: data,
+            dbRecord: fileDoc
         })
 
     } catch (error) {
@@ -65,22 +87,22 @@ export const uploadFile = async (req, res) => {
 // 2. Listar archivos de Hostinger
 export const listFiles = async (req, res) => {
     try {
-        const response = await fetch(`${HOSTINGER_API_URL}/files`, {
-            method: 'GET',
-            headers: {
-                'x-api-key': HOSTINGER_API_KEY,
-            }
-        })
-
-        const data = await response.json()
-
-        if (!response.ok) {
-            return res.status(response.status).json({
+        let response
+        try {
+            response = await axios.get(`${HOSTINGER_API_URL}/files`, {
+                headers: {
+                    'x-api-key': HOSTINGER_API_KEY,
+                }
+            })
+        } catch (axiosError) {
+            return res.status(axiosError.response?.status || 500).json({
                 success: false,
                 message: 'Error obteniendo archivos del bucket',
-                error: data
+                error: axiosError.response?.data || axiosError.message
             })
         }
+
+        const data = response.data
 
         res.status(200).json({
             success: true,

@@ -46,11 +46,19 @@ const solicitudSchema = new mongoose.Schema(
             type: String,
             maxlength: 500,
         },
+        documento: {
+            type: Boolean,
+            default: false,
+        },
         historial_estados: [
             {
                 estado: String,
                 fecha: { type: Date, default: Date.now },
                 comentario: String,
+                documento: {
+                    type: Boolean,
+                    default: false,
+                }
             },
         ],
     },

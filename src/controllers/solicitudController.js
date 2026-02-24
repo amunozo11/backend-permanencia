@@ -140,7 +140,7 @@ export const obtenerSolicitud = async (req, res) => {
 // Admin actualiza estado
 export const actualizarEstado = async (req, res) => {
     try {
-        const { estado, observacionesAdmin, observaciones_admin } = req.body
+        const { estado, observacionesAdmin, observaciones_admin, documento } = req.body
         const finalObservaciones = observacionesAdmin || observaciones_admin
 
         if (!estado) {
@@ -154,9 +154,12 @@ export const actualizarEstado = async (req, res) => {
 
         solicitud.estado = estado
         if (finalObservaciones) solicitud.observaciones_admin = finalObservaciones
+        if (typeof documento === 'boolean') solicitud.documento = documento
+
         solicitud.historial_estados.push({
             estado,
             comentario: finalObservaciones || `Estado actualizado a ${estadoLabels[estado]}`,
+            documento: typeof documento === 'boolean' ? documento : (solicitud.documento || false),
         })
 
         await solicitud.save()

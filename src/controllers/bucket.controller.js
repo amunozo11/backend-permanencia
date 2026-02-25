@@ -114,3 +114,63 @@ export const listFiles = async (req, res) => {
         res.status(500).json({ success: false, message: 'Error interno conectando al bucket', error: error.message })
     }
 }
+
+// 3. Obtener un archivo específico por su ID
+export const getFileById = async (req, res) => {
+    try {
+        const { id } = req.params
+
+        const file = await BucketFile.findById(id).populate('uploadedBy', 'nombre email')
+
+        if (!file) {
+            return res.status(404).json({ success: false, message: 'Archivo no encontrado' })
+        }
+
+        res.status(200).json({
+            success: true,
+            data: file
+        })
+    } catch (error) {
+        console.error('Error al obtener el archivo:', error)
+        res.status(500).json({ success: false, message: 'Error interno del servidor al obtener archivo', error: error.message })
+    }
+}
+
+// 4. Descargar un archivo físico desde Hostinger pasando a través del backend
+export const downloadFileById = async (req, res) => {
+    try {
+        const { id } = req.params
+
+        // 1. Encontrar registro en la BD
+        const file = await BucketFile.findById(id)
+
+        if (!file) {
+            return res.status(404).json({ success: false, message: 'Archivo no encontrado' })
+        }
+
+        if (!file.hostingerUrl || file.hostingerUrl === 'URL_NO_DETERMINADA') {
+            return res.status(400).json({ success: false, message: 'El archivo no tiene una URL válida' })
+        }
+
+        // 2. Hacer fetch a Hostinger para descargar el archivo
+        const response = await axios({
+            url: file.hostingerUrl,
+            method: 'GET',
+            responseType: 'stream', // Para no cargar todo el archivo en la memoria del servidor de NodeJS
+            headers: {
+                'x-api-key': HOSTINGER_API_KEY
+            }
+        })
+
+        // 3. Configurar headers para descarga
+        res.setHeader('Content-Type', file.mimetype || 'application/octet-stream')
+        res.setHeader('Content-Disposition', `attachment; filename="${file.originalName}"`)
+
+        // 4. Pasar el stream al cliente
+        response.data.pipe(res)
+
+    } catch (error) {
+        console.error('Error en descarga de archivo de Hostinger:', error.message)
+        res.status(500).json({ success: false, message: 'Error interno conectando al almacenaje externo para su descarga', error: error.message })
+    }
+}

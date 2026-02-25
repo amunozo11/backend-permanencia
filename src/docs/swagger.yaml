@@ -311,7 +311,7 @@ paths:
     post:
       tags:
         - Admin (Bucket)
-      summary: Sube un archivo al bucket local
+      summary: Sube un archivo al bucket externo (Hostinger)
       requestBody:
         content:
           multipart/form-data:
@@ -323,16 +323,54 @@ paths:
                   format: binary
       responses:
         "200":
-          description: Archivo subido exitosamente
-
+          description: Archivo subido y registrado exitosamente en BD
   /api/admin/bucket/files:
     get:
       tags:
         - Admin (Bucket)
-      summary: Lista los archivos en el bucket
+      summary: Lista todos los archivos del bucket en Hostinger
       responses:
         "200":
           description: Lista de archivos
+  /api/admin/bucket/files/{id}:
+    get:
+      tags:
+        - Admin (Bucket)
+      summary: Obtiene la información en base de datos de un archivo subido
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: El ID de MongoDB del BucketFile
+      responses:
+        "200":
+          description: Información del archivo
+        "404":
+          description: Archivo no encontrado
+  /api/admin/bucket/files/{id}/download:
+    get:
+      tags:
+        - Admin (Bucket)
+      summary: Descarga el archivo físico almacenado
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: El ID de MongoDB del BucketFile
+      responses:
+        "200":
+          description: Archivo binario para descarga
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        "404":
+          description: Archivo no encontrado
 
   # ─── ADMIN: SERVICIOS ───
   /api/admin/servicios/tutoria:

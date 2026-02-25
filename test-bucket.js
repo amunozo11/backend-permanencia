@@ -3,7 +3,7 @@ import FormData from 'form-data'
 import axios from 'axios'
 
 const HOSTINGER_API_URL = 'https://mediumblue-bear-211634.hostingersite.com/api'
-const HOSTINGER_API_KEY = process.env.HOSTINGER_API_KEY || 'sispegib-secret-key-2024'
+const HOSTINGER_API_KEY = process.env.HOSTINGER_API_KEY || ''
 
 async function testUploadAxios() {
     fs.writeFileSync('test-upload.txt', 'Hello bucket test')

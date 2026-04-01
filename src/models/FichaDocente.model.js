@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose'
 
 const FichaDocenteSchema = new mongoose.Schema({
   nombres_apellidos: { type: String, required: true },
@@ -23,7 +23,7 @@ const FichaDocenteSchema = new mongoose.Schema({
   grupo_investigacion: { type: String, enum: ['sí', 'no'], required: true },
   cual_grupo: { type: String },
   horas_semanales: { type: Number, required: true },
-  createdAt: { type: Date, default: Date.now }
-});
+  createdAt: { type: Date, default: Date.now },
+})
 
-module.exports = mongoose.model('FichaDocente', FichaDocenteSchema);
+export default mongoose.model('FichaDocente', FichaDocenteSchema)

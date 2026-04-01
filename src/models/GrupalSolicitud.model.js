@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose'
 
 const GrupalSolicitudSchema = new mongoose.Schema({
   fecha_solicitud: { type: Date, required: true },
@@ -22,7 +22,7 @@ const GrupalSolicitudSchema = new mongoose.Schema({
   bloque: { type: String, required: true },
   sede: { type: String, required: true },
   estado: { type: String, enum: ['se hizo', 'no se hizo', 'espera', 'sin disponibilidad de tallerista'], required: true },
-  motivo: { type: String }
-});
+  motivo: { type: String },
+})
 
-module.exports = mongoose.model('GrupalSolicitud', GrupalSolicitudSchema);
+export default mongoose.model('GrupalSolicitud', GrupalSolicitudSchema)

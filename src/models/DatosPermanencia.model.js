@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+import mongoose from 'mongoose'
 
 const DatosPermanenciaSchema = new mongoose.Schema({
   estudiante_programa_academico: { type: String, required: true },
@@ -29,4 +29,4 @@ const DatosPermanenciaSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 })
 
-module.exports = mongoose.model("DatosPermanencia", DatosPermanenciaSchema)
+export default mongoose.model('DatosPermanencia', DatosPermanenciaSchema)

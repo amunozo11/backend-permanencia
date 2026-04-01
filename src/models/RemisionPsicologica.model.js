@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose'
 
 const RemisionPsicologicaSchema = new mongoose.Schema({
   nombre_estudiante: { type: String, required: true },
@@ -12,7 +12,7 @@ const RemisionPsicologicaSchema = new mongoose.Schema({
   fecha: { type: Date, required: true },
   hora: { type: String, required: true },
   tipo_remision: { type: String, required: true },
-  observaciones: { type: String }
-});
+  observaciones: { type: String },
+})
 
-module.exports = mongoose.model('RemisionPsicologica', RemisionPsicologicaSchema);
+export default mongoose.model('RemisionPsicologica', RemisionPsicologicaSchema)

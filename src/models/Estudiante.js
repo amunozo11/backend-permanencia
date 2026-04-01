@@ -1,11 +1,11 @@
-const mongoose = require("mongoose")
+import mongoose from 'mongoose'
 
 const estudianteSchema = new mongoose.Schema(
   {
     tipo_documento: {
       type: String,
       required: true,
-      enum: ["CC", "TI", "CE", "Pasaporte"],
+      enum: ['CC', 'TI', 'CE', 'Pasaporte'],
     },
     numero_documento1: {
       type: String,
@@ -47,25 +47,25 @@ const estudianteSchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: [
-        "ADMINISTRACIÓN DE EMPRESAS",
-        "ADMINISTRACIÓN DE EMPRESAS TURÍSTICAS Y HOTELERAS",
-        "COMERCIO INTERNACIONAL",
-        "CONTADURÍA PÚBLICA",
-        "DERECHO",
-        "ECONOMÍA",
-        "ENFERMERÍA",
-        "INGENIERÍA AGROINDUSTRIAL",
-        "INGENIERIA AMBIENTAL Y SANITARIA",
-        "INGENIERÍA ELECTRÓNICA",
-        "INGENIERÍA DE SISTEMAS",
-        "INSTRUMENTACIÓN QUIRÚRGICA",
-        "LICENCIATURA EN ARTE Y FOLCLOR",
-        "LICENCIATURA EN CIENCIAS NATURALES Y EDUCACIÓN AMBIENTAL",
-        "LICENCIATURA EN EDUCACIÓN FISICA, RECREACIÓN Y DEPORTES",
-        "LICENCIATURA EN LENGUA CASTELLANA E INGLÉS",
-        "LICENCIATURA EN MATEMÁTICAS",
-        "MICROBIOLOGÍA",
-        "SOCIOLOGÍA",
+        'ADMINISTRACIÓN DE EMPRESAS',
+        'ADMINISTRACIÓN DE EMPRESAS TURÍSTICAS Y HOTELERAS',
+        'COMERCIO INTERNACIONAL',
+        'CONTADURÍA PÚBLICA',
+        'DERECHO',
+        'ECONOMÍA',
+        'ENFERMERÍA',
+        'INGENIERÍA AGROINDUSTRIAL',
+        'INGENIERIA AMBIENTAL Y SANITARIA',
+        'INGENIERÍA ELECTRÓNICA',
+        'INGENIERÍA DE SISTEMAS',
+        'INSTRUMENTACIÓN QUIRÚRGICA',
+        'LICENCIATURA EN ARTE Y FOLCLOR',
+        'LICENCIATURA EN CIENCIAS NATURALES Y EDUCACIÓN AMBIENTAL',
+        'LICENCIATURA EN EDUCACIÓN FISICA, RECREACIÓN Y DEPORTES',
+        'LICENCIATURA EN LENGUA CASTELLANA E INGLÉS',
+        'LICENCIATURA EN MATEMÁTICAS',
+        'MICROBIOLOGÍA',
+        'SOCIOLOGÍA',
       ],
     },
     semestre: {
@@ -77,7 +77,7 @@ const estudianteSchema = new mongoose.Schema(
     riesgo_desercion: {
       type: String,
       required: true,
-      enum: ["Muy bajo", "Bajo", "Medio", "Alto", "Muy alto"],
+      enum: ['Muy bajo', 'Bajo', 'Medio', 'Alto', 'Muy alto'],
     },
     estrato: {
       type: Number,
@@ -94,13 +94,10 @@ const estudianteSchema = new mongoose.Schema(
       default: true,
     },
   },
-  {
-    timestamps: true,
-  },
+  { timestamps: true }
 )
 
-// Índices para mejorar el rendimiento
 estudianteSchema.index({ programa_academico: 1 })
 estudianteSchema.index({ riesgo_desercion: 1 })
 
-module.exports = mongoose.model("Estudiante", estudianteSchema)
+export default mongoose.model('Estudiante', estudianteSchema)

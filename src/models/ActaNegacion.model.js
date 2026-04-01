@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose'
 
 const ActaNegacionSchema = new mongoose.Schema({
   nombre_estudiante: { type: String, required: true },
@@ -13,7 +13,7 @@ const ActaNegacionSchema = new mongoose.Schema({
   firma_estudiante: { type: String, required: true },
   documento_firma_estudiante: { type: String, required: true },
   docente_permanencia: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now }
-});
+  createdAt: { type: Date, default: Date.now },
+})
 
-module.exports = mongoose.model('ActaNegacion', ActaNegacionSchema);
+export default mongoose.model('ActaNegacion', ActaNegacionSchema)

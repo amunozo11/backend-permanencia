@@ -1,0 +1,791 @@
+# Centralized Swagger API Documentation
+
+openapi: 3.0.0
+info:
+  title: Backend Permanencia API
+  description: Documentación de la API centralizada para el backend de permanencia estudiantil.
+  version: 1.0.0
+  contact:
+    name: Soporte
+    email: soporte@ejemplo.com
+
+servers:
+  - url: http://localhost:5000
+    description: Servidor de Desarrollo
+  - url: https://api.tu-dominio.com
+    description: Servidor de Producción
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Mensaje de error detallado
+        error:
+          type: string
+          example: Error interno del servidor
+
+    Solicitud:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 64b9a1c2e4b0d8f7a6c5b4a3
+        tipo:
+          type: string
+          enum: [Tutoria, Psicologia, Apoyo Financiero]
+        descripcion:
+          type: string
+          example: Requiero apoyo con matemáticas.
+        estado:
+          type: string
+          enum: [Pendiente, En Proceso, Resuelto]
+          example: Pendiente
+
+security:
+  - BearerAuth: []
+
+paths:
+  /api/health:
+    get:
+      tags:
+        - Health
+      summary: Verifica el estado del servidor
+      security: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  timestamp:
+                    type: string
+                    example: 2026-02-24T18:00:00Z
+
+  # ─── AUTH ───
+  /api/auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Registra un nuevo usuario
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "201":
+          description: Usuario creado exitosamente
+        "400":
+          description: Datos inválidos
+
+  /api/auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Inicia sesión
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Login exitoso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        "401":
+          description: Credenciales incorrectas
+
+  /api/auth/profile:
+    get:
+      tags:
+        - Auth
+      summary: Obtiene el perfil del usuario autenticado
+      responses:
+        "200":
+          description: Datos del usuario
+        "401":
+          description: No autorizado
+
+  # ─── SOLICITUDES ───
+  /api/solicitudes:
+    post:
+      tags:
+        - Solicitudes
+      summary: Crea una nueva solicitud
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Solicitud"
+      responses:
+        "201":
+          description: Solicitud creada
+
+    get:
+      tags:
+        - Solicitudes (Admin)
+      summary: (Admin) Obtiene todas las solicitudes del sistema
+      responses:
+        "200":
+          description: Lista de solicitudes
+
+  /api/solicitudes/mis:
+    get:
+      tags:
+        - Solicitudes
+      summary: Obtiene las solicitudes del usuario autenticado
+      responses:
+        "200":
+          description: Lista de solicitudes propias del usuario
+
+  /api/solicitudes/{id}:
+    get:
+      tags:
+        - Solicitudes
+      summary: Obtiene una solicitud por su ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Detalle de la solicitud
+        "404":
+          description: Solicitud no encontrada
+
+  /api/solicitudes/{id}/estado:
+    put:
+      tags:
+        - Solicitudes (Admin)
+      summary: (Admin) Actualiza el estado de una solicitud
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                estado:
+                  type: string
+      responses:
+        "200":
+          description: Estado actualizado
+
+  # ─── NOTIFICACIONES ───
+  /api/notificaciones:
+    get:
+      tags:
+        - Notificaciones
+      summary: Obtiene las notificaciones del usuario
+      responses:
+        "200":
+          description: Lista de notificaciones
+
+  /api/notificaciones/count:
+    get:
+      tags:
+        - Notificaciones
+      summary: Cuenta las notificaciones no leídas
+      responses:
+        "200":
+          description: Cantidad de notificaciones
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+
+  /api/notificaciones/{id}/leer:
+    put:
+      tags:
+        - Notificaciones
+      summary: Marca una notificación como leída
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Notificación marcada como leída
+
+  /api/notificaciones/leer-todas:
+    put:
+      tags:
+        - Notificaciones
+      summary: Marca todas las notificaciones como leídas
+      responses:
+        "200":
+          description: Todas las notificaciones marcadas como leídas
+
+  # ─── ADMIN: UPLOAD CSV ───
+  /api/admin/upload/upload-csv:
+    post:
+      tags:
+        - Admin (Carga CSV)
+      summary: Sube y procesa un archivo CSV de permanencia
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: CSV procesado exitosamente
+
+  /api/admin/upload/datos-permanencia:
+    get:
+      tags:
+        - Admin (Carga CSV)
+      summary: Obtiene los datos de permanencia extraídos
+      responses:
+        "200":
+          description: Datos de permanencia
+
+  /api/admin/upload/estadisticas:
+    get:
+      tags:
+        - Admin (Carga CSV)
+      summary: Obtiene estadísticas de la carga de datos
+      responses:
+        "200":
+          description: Estadísticas obtenidas
+
+  # ─── ADMIN: BUCKET ───
+  /api/admin/bucket/upload:
+    post:
+      tags:
+        - Admin (Bucket)
+      summary: Sube un archivo al bucket externo (Hostinger)
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Archivo subido y registrado exitosamente en BD
+  /api/admin/bucket/files:
+    get:
+      tags:
+        - Admin (Bucket)
+      summary: Lista todos los archivos del bucket en Hostinger
+      responses:
+        "200":
+          description: Lista de archivos
+  /api/admin/bucket/files/{id}:
+    get:
+      tags:
+        - Admin (Bucket)
+      summary: Obtiene la información en base de datos de un archivo subido
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: El ID de MongoDB del BucketFile
+      responses:
+        "200":
+          description: Información del archivo
+        "404":
+          description: Archivo no encontrado
+  /api/admin/bucket/files/{id}/download:
+    get:
+      tags:
+        - Admin (Bucket)
+      summary: Descarga el archivo físico almacenado
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: El ID de MongoDB del BucketFile
+      responses:
+        "200":
+          description: Archivo binario para descarga
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        "404":
+          description: Archivo no encontrado
+
+  # ─── ADMIN: SERVICIOS ───
+  /api/admin/servicios/tutoria:
+    post:
+      tags: [Admin (Servicios)]
+      summary: Registra tutoría
+      responses: { "200": { description: Registrado } }
+    get:
+      tags: [Admin (Servicios)]
+      summary: Obtiene tutorías
+      responses: { "200": { description: Lista } }
+  /api/admin/servicios/psicologia:
+    post:
+      tags: [Admin (Servicios)]
+      summary: Registra psicología
+      responses: { "200": { description: Registrado } }
+    get:
+      tags: [Admin (Servicios)]
+      summary: Obtiene psicología
+      responses: { "200": { description: Lista } }
+  /api/admin/servicios/comedor:
+    post:
+      tags: [Admin (Servicios)]
+      summary: Registra comedor
+      responses: { "200": { description: Registrado } }
+    get:
+      tags: [Admin (Servicios)]
+      summary: Obtiene comedor
+      responses: { "200": { description: Lista } }
+  /api/admin/servicios/vocacional:
+    post:
+      tags: [Admin (Servicios)]
+      summary: Registra vocacional
+      responses: { "200": { description: Registrado } }
+    get:
+      tags: [Admin (Servicios)]
+      summary: Obtiene vocacional
+      responses: { "200": { description: Lista } }
+  /api/admin/servicios/socioeconomico:
+    post:
+      tags: [Admin (Servicios)]
+      summary: Registra socioeconómico
+      responses: { "200": { description: Registrado } }
+    get:
+      tags: [Admin (Servicios)]
+      summary: Obtiene socioeconómicos
+      responses: { "200": { description: Lista } }
+  /api/admin/servicios/talleres:
+    post:
+      tags: [Admin (Servicios)]
+      summary: Registra taller
+      responses: { "200": { description: Registrado } }
+    get:
+      tags: [Admin (Servicios)]
+      summary: Obtiene talleres
+      responses: { "200": { description: Lista } }
+  /api/admin/servicios/seguimiento:
+    post:
+      tags: [Admin (Servicios)]
+      summary: Registra seguimiento
+      responses: { "200": { description: Registrado } }
+    get:
+      tags: [Admin (Servicios)]
+      summary: Obtiene seguimientos
+      responses: { "200": { description: Lista } }
+  /api/admin/servicios/estudiantes:
+    get:
+      tags: [Admin (Servicios)]
+      summary: Obtiene listado de estudiantes en servicios
+      responses: { "200": { description: Lista de estudiantes } }
+
+  # ─── ADMIN: ACTA NEGACIÓN ───
+  /api/admin/acta-negacion:
+    post:
+      tags:
+        - Admin (Actas)
+      summary: Crea un acta de negación
+      responses:
+        "201":
+          description: Acta creada
+    get:
+      tags:
+        - Admin (Actas)
+      summary: Obtiene todas las actas de negación
+      responses:
+        "200":
+          description: Lista de actas
+  /api/admin/acta-negacion/{id}:
+    get:
+      tags:
+        - Admin (Actas)
+      summary: Obtiene un acta por ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Detalle del acta
+    put:
+      tags:
+        - Admin (Actas)
+      summary: Actualiza un acta
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Acta actualizada
+    delete:
+      tags:
+        - Admin (Actas)
+      summary: Elimina un acta
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Acta eliminada
+
+  # ─── ADMIN: ASISTENCIA ACTIVIDAD ───
+  /api/admin/asistencia-actividad:
+    post:
+      tags: [Admin (Asistencia)]
+      summary: Crea asistencia
+      responses:
+        "201":
+          description: Creado
+    get:
+      tags: [Admin (Asistencia)]
+      summary: Obtiene todas las asistencias
+      responses:
+        "200":
+          description: Lista
+  /api/admin/asistencia-actividad/{id}:
+    get:
+      tags: [Admin (Asistencia)]
+      summary: Obtiene asistencia por ID
+      parameters:
+        [{ in: path, name: id, required: true, schema: { type: string } }]
+      responses: { "200": { description: Detalle } }
+    put:
+      tags: [Admin (Asistencia)]
+      summary: Actualiza asistencia
+      parameters:
+        [{ in: path, name: id, required: true, schema: { type: string } }]
+      responses: { "200": { description: Actualizado } }
+    delete:
+      tags: [Admin (Asistencia)]
+      summary: Elimina asistencia
+      parameters:
+        [{ in: path, name: id, required: true, schema: { type: string } }]
+      responses: { "200": { description: Eliminado } }
+
+  # ─── ADMIN: FICHA DOCENTE ───
+  /api/admin/ficha-docente:
+    post:
+      tags: [Admin (Ficha Docente)]
+      summary: Crea ficha
+      responses: { "201": { description: Creado } }
+    get:
+      tags: [Admin (Ficha Docente)]
+      summary: Obtiene fichas
+      responses: { "200": { description: Lista } }
+  /api/admin/ficha-docente/{id}:
+    get:
+      tags: [Admin (Ficha Docente)]
+      summary: Obtiene ficha por ID
+      parameters:
+        [{ in: path, name: id, required: true, schema: { type: string } }]
+      responses: { "200": { description: Detalle } }
+    put:
+      tags: [Admin (Ficha Docente)]
+      summary: Actualiza ficha
+      parameters:
+        [{ in: path, name: id, required: true, schema: { type: string } }]
+      responses: { "200": { description: Actualizado } }
+    delete:
+      tags: [Admin (Ficha Docente)]
+      summary: Elimina ficha
+      parameters:
+        [{ in: path, name: id, required: true, schema: { type: string } }]
+      responses: { "200": { description: Eliminado } }
+
+  # ─── ADMIN: GRUPAL SOLICITUD ───
+  /api/admin/grupal-solicitud:
+    post:
+      tags: [Admin (Grupal Solicitud)]
+      summary: Crea solicitud grupal
+      responses: { "201": { description: Creado } }
+    get:
+      tags: [Admin (Grupal Solicitud)]
+      summary: Obtiene solicitudes grupales
+      responses: { "200": { description: Lista } }
+  /api/admin/grupal-solicitud/{id}:
+    get:
+      tags: [Admin (Grupal Solicitud)]
+      summary: Obtiene solicitud grupal por ID
+      parameters:
+        [{ in: path, name: id, required: true, schema: { type: string } }]
+      responses: { "200": { description: Detalle } }
+    put:
+      tags: [Admin (Grupal Solicitud)]
+      summary: Actualiza solicitud grupal
+      parameters:
+        [{ in: path, name: id, required: true, schema: { type: string } }]
+      responses: { "200": { description: Actualizado } }
+    delete:
+      tags: [Admin (Grupal Solicitud)]
+      summary: Elimina solicitud grupal
+      parameters:
+        [{ in: path, name: id, required: true, schema: { type: string } }]
+      responses: { "200": { description: Eliminado } }
+
+  # ─── ADMIN: REMISIÓN PSICOLÓGICA ───
+  /api/admin/remision-psicologica:
+    post:
+      tags: [Admin (Remisión Psicológica)]
+      summary: Crea remisión
+      responses: { "201": { description: Creado } }
+    get:
+      tags: [Admin (Remisión Psicológica)]
+      summary: Obtiene remisiones
+      responses: { "200": { description: Lista } }
+  /api/admin/remision-psicologica/{id}:
+    get:
+      tags: [Admin (Remisión Psicológica)]
+      summary: Obtiene remisión por ID
+      parameters:
+        [{ in: path, name: id, required: true, schema: { type: string } }]
+      responses: { "200": { description: Detalle } }
+    put:
+      tags: [Admin (Remisión Psicológica)]
+      summary: Actualiza remisión
+      parameters:
+        [{ in: path, name: id, required: true, schema: { type: string } }]
+      responses: { "200": { description: Actualizado } }
+    delete:
+      tags: [Admin (Remisión Psicológica)]
+      summary: Elimina remisión
+      parameters:
+        [{ in: path, name: id, required: true, schema: { type: string } }]
+      responses: { "200": { description: Eliminado } }
+
+  # ─── ADMIN: SOFTWARE ESTUDIANTE ───
+  /api/admin/software-estudiante:
+    post:
+      tags: [Admin (Software Estudiante)]
+      summary: Crea software estudiante
+      responses: { "201": { description: Creado } }
+    get:
+      tags: [Admin (Software Estudiante)]
+      summary: Obtiene software estudiante
+      responses: { "200": { description: Lista } }
+  /api/admin/software-estudiante/{id}:
+    get:
+      tags: [Admin (Software Estudiante)]
+      summary: Obtiene por ID
+      parameters:
+        [{ in: path, name: id, required: true, schema: { type: string } }]
+      responses: { "200": { description: Detalle } }
+    put:
+      tags: [Admin (Software Estudiante)]
+      summary: Actualiza
+      parameters:
+        [{ in: path, name: id, required: true, schema: { type: string } }]
+      responses: { "200": { description: Actualizado } }
+    delete:
+      tags: [Admin (Software Estudiante)]
+      summary: Elimina
+      parameters:
+        [{ in: path, name: id, required: true, schema: { type: string } }]
+      responses: { "200": { description: Eliminado } }
+
+  # ─── ADMIN: SOFTWARE SOLICITUD ───
+  /api/admin/software-solicitud:
+    post:
+      tags: [Admin (Software Solicitud)]
+      summary: Crea software solicitud
+      responses: { "201": { description: Creado } }
+    get:
+      tags: [Admin (Software Solicitud)]
+      summary: Obtiene software solicitud
+      responses: { "200": { description: Lista } }
+  /api/admin/software-solicitud/{id}:
+    get:
+      tags: [Admin (Software Solicitud)]
+      summary: Obtiene por ID
+      parameters:
+        [{ in: path, name: id, required: true, schema: { type: string } }]
+      responses: { "200": { description: Detalle } }
+    put:
+      tags: [Admin (Software Solicitud)]
+      summary: Actualiza
+      parameters:
+        [{ in: path, name: id, required: true, schema: { type: string } }]
+      responses: { "200": { description: Actualizado } }
+    delete:
+      tags: [Admin (Software Solicitud)]
+      summary: Elimina
+      parameters:
+        [{ in: path, name: id, required: true, schema: { type: string } }]
+      responses: { "200": { description: Eliminado } }
+
+  # ─── ADMIN: MORTALIDAD ───
+  /api/admin/mortalidad/importar:
+    post:
+      tags: [Admin (Mortalidad)]
+      summary: Importa datos de mortalidad
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              {
+                type: object,
+                properties: { file: { type: string, format: binary } },
+              }
+      responses: { "200": { description: Importado exitosamente } }
+  /api/admin/mortalidad/top-asignaturas:
+    get:
+      tags: [Admin (Mortalidad)]
+      summary: Obtiene top asignaturas con mayor mortalidad
+      responses: { "200": { description: Lista } }
+  /api/admin/mortalidad/evolucion/{asignatura}:
+    get:
+      tags: [Admin (Mortalidad)]
+      summary: Evolución histórica por asignatura
+      parameters:
+        [
+          {
+            in: path,
+            name: asignatura,
+            required: true,
+            schema: { type: string },
+          },
+        ]
+      responses: { "200": { description: Datos de evolución } }
+  /api/admin/mortalidad/concentracion-historica:
+    get:
+      tags: [Admin (Mortalidad)]
+      summary: Concentración histórica
+      responses: { "200": { description: Datos } }
+  /api/admin/mortalidad/riesgos-emergentes:
+    get:
+      tags: [Admin (Mortalidad)]
+      summary: Riesgos emergentes
+      responses: { "200": { description: Datos } }
+  /api/admin/mortalidad/asignaturas:
+    get:
+      tags: [Admin (Mortalidad)]
+      summary: Lista de asignaturas reportadas
+      responses: { "200": { description: Lista } }
+
+  # ─── ADMIN: INSCRITOS ───
+  /api/admin/inscritos/importar:
+    post:
+      tags: [Admin (Inscritos)]
+      summary: Importa datos de inscritos
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              {
+                type: object,
+                properties: { file: { type: string, format: binary } },
+              }
+      responses: { "200": { description: Importado exitosamente } }
+  /api/admin/inscritos/por-municipio:
+    get:
+      tags: [Admin (Inscritos)]
+      summary: Inscritos agrupados por municipio
+      responses: { "200": { description: Datos agrupadps } }
+  /api/admin/inscritos/top:
+    get:
+      tags: [Admin (Inscritos)]
+      summary: Top municipios con más inscritos
+      responses: { "200": { description: Lista top } }
+  /api/admin/inscritos/total:
+    get:
+      tags: [Admin (Inscritos)]
+      summary: Total histórico de inscritos
+      responses: { "200": { description: Conteo total } }
+
+  # ─── ADMIN: RIESGO ───
+  /api/admin/riesgo/import:
+    post:
+      tags:
+        - Admin (Riesgo)
+      summary: Importa datos de riesgo estudiantil (Excel)
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                archivo:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Archivo importado correctamente
+
+  /api/admin/riesgo/stats:
+    get:
+      tags:
+        - Admin (Riesgo)
+      summary: Obtiene estadísticas de riesgo
+      responses:
+        "200":
+          description: Estadísticas
